@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vendet Turistike te Rajonit Juglindor te Shqiperise</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f9ff;
+      color: #333;
+      line-height: 1.6;
+      scroll-padding-top: 70px;
+    }
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(90deg, #4a90e2, #145da0);
+      box-shadow: 0 2px 8px rgba(20,93,160,0.3);
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 60px;
+      padding: 0 1.5rem;
+      box-sizing: border-box;
+      color: white;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 2.5rem;
+    }
+    nav a {
+      color: white;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.5rem 0;
+      border-bottom: 3px solid transparent;
+      transition: border-color 0.3s ease, color 0.3s ease;
+    }
+    nav a:hover,
+    nav a:focus {
+      border-color: #fdd835;
+      color: #fdd835;
+      outline: none;
+    }
+    /* Language area container */
+    .lang-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+    }
+    /* Flag displayed next to the select */
+    #selected-flag {
+      font-size: 1.5rem;
+      user-select: none;
+      line-height: 1;
+    }
+
+    #language-select {
+      background: rgba(255 255 255 / 0.15);
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: background-color 0.3s ease;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      position: relative;
+    }
+    #language-select:hover,
+    #language-select:focus {
+      background: rgba(255 255 255 / 0.4);
+      outline: none;
+    }
+    /* Header */
+    header {
+      background: linear-gradient(90deg, #4a90e2, #145da0);
+      color: white;
+      padding: 3.5rem 1rem 2rem;
+      text-align: center;
+      font-weight: 600;
+      font-size: 2rem;
+      letter-spacing: 1.5px;
+      box-shadow: 0 4px 8px rgba(20,93,160,0.3);
+    }
+    main {
+      max-width: 1100px;
+      margin: 2rem auto 4rem;
+      padding: 0 1rem;
+    }
+    section {
+      margin-bottom: 3rem;
+    }
+    section h2 {
+      border-left: 6px solid #145da0;
+      padding-left: 0.75rem;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      color: #145da0;
+      font-size: 1.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+    .flip-card {
+      background-color: transparent;
+      width: 280px;
+      height: 350px;
+      perspective: 1000px;
+      cursor: pointer;
+      outline: none;
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      box-sizing: border-box;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      box-shadow: 0 8px 16px rgba(20,93,160,0.25);
+      border-radius: 12px;
+      background-color: white;
+      user-select: none;
+    }
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: white;
+      font-weight: 600;
+      font-size: 1.25rem;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+      user-select: none;
+      top: 0;
+      left: 0;
+    }
+    .flip-card-front {
+      background-size: cover;
+      background-position: center;
+      box-shadow: inset 0 -50px 50px -20px rgba(0, 0, 0, 0.7);
+      z-index: 2;
+    }
+    .flip-card-front .place-name {
+      background: rgba(20,93,160,0.85);
+      padding: 12px 16px;
+      border-radius: 0 0 12px 12px;
+      font-size: 1.3rem;
+      user-select: none;
+    }
+    .flip-card-back {
+      background: #145da0;
+      color: #f1f1f1;
+      transform: rotateY(180deg);
+      padding: 1.5rem 1.2rem;
+      font-weight: 400;
+      font-size: 1rem;
+      overflow-y: auto;
+      box-shadow: inset 0 0 50px rgba(0,0,0,0.15);
+      z-index: 1;
+    }
+    .flip-card-back::-webkit-scrollbar {
+      width: 6px;
+    }
+    .flip-card-back::-webkit-scrollbar-thumb {
+      background-color: rgba(255,255,255,0.3);
+      border-radius: 3px;
+    }
+    @media (max-width: 768px) {
+      .card-container {
+        justify-content: center;
+      }
+      .flip-card {
+        width: 90vw;
+        max-width: 300px;
+        height: 380px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="#natyrale" data-key="nav_natyrore">Natyrore</a></li>
+      
+      <li><a href="#historike" data-key="nav_historike">Historike</a></li>
+    </ul>
+    <div class="lang-container">
+      <span id="selected-flag" aria-hidden="true">🇦🇱</span>
+      <select id="language-select" aria-label="Zgjidh gjuhën / Select language">
+        <option value="sq">Shqip</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
+    </div>
+  </nav>
+  <header id="page-title" data-key="header_title">
+    Vendet Turistike të Rajonit Juglindor të Shqipërisë
+  </header>
+  <main>
+    <p>Mirësevini në Rajonin Juglindor të Shqipërisë! Ky rajon magjepsës ofron një pasuri të pasur historike, kulturore dhe natyrore që do t'ju lërë pa fjalë. Nga liqenet e mrekullueshme dhe monumentet e lashta, deri te qytetet e bukura me kalatë dhe traditat e pasura, rajoni juglindor është një destinacion ideal për ata që kërkojnë një eksperiencë autentike. Me një mikrokosëm të veçantë që bashkon natyrën dhe kulturën, ky rajon është vendi ku mund të shijoni bukuri të paprekura, të shihni qytetërime të lashta dhe të përjetoni mikpritjen shqiptare në çdo hap. Zgjidhni rajonin juglindor dhe bëhuni pjesë e një udhëtimi të paharrueshëm!</p>
+    <section id="natyrale">
+      <h2 data-key="section_natyrore">Trashëgimia Natyrore</h2>
+      <div class="card-container">
+        <div class="flip-card" tabindex="0" aria-label="Liqeni i Prespës">
+          <div class="flip-card-inner">
+            <div class="flip-card-front" data-key="place1_name" style="background-image: url('Liqeni_Prespes.jpg');">
+              <div class="place-name">Liqeni i Prespës</div>
+            </div>
+            <div class="flip-card-back" data-key="place1_info">
+              Liqeni i Prespës është një nga liqenet më të vjetër në Ballkan, i njohur për biodiversitetin dhe peizazhet natyrore të paprekura. Është habitat për shumë specie karakteristike.
+            </div>
+          </div>
+        </div>
+        <div class="flip-card" tabindex="0" aria-label="Parku Kombëtar i Llogarasë">
+          <div class="flip-card-inner">
+            <div class="flip-card-front" data-key="place2_name" style="background-image: url('parkullogarase.jpeg');">
+              <div class="place-name">Parku Kombëtar i Llogarasë</div>
+            </div>
+            <div class="flip-card-back" data-key="place2_info">
+              Parku Kombëtar i Llogarasë shtrihet në malet e jugut dhe ofron pamje spektakolare të Detit Jon dhe biodiversitet unik mes pyjeve dhe shkëmbinjve.
+            </div>
+          </div>
+        </div>
+        <div class="flip-card" tabindex="0" aria-label="Kanioni i Osumit">
+          <div class="flip-card-inner">
+            <div class="flip-card-front" data-key="place3_name" style="background-image: url('kanioni osumit.jpeg');">
+              <div class="place-name">Kanioni i Osumit</div>
+            </div>
+            <div class="flip-card-back" data-key="place3_info">
+              Kanioni i Osumit është një nga kanionet më të mëdha në vend, me shkëmbinj të thepisur dhe ujëvara mahnitëse që tërheqin adhuruesit e natyrës dhe aventurës.
+            </div>
+          </div>
+        </div>
+        <div class="flip-card" tabindex="0" aria-label="Shpella e Pëllumbasit">
+          <div class="flip-card-inner">
+            <div class="flip-card-front" data-key="place4_name" style="background-image: url('shpellapellumbesit.jpeg');">
+              <div class="place-name">Shpella e Pëllumbasit</div>
+            </div>
+            <div class="flip-card-back" data-key="place4_info">
+              Një nga shpellat më të mëdha në Shqipëri, e njohur për formacionet e saj gjeologjike të veçanta dhe për rëndësinë paleontologjike me mbetje fosile.
+            </div>
+          </div>
+        </div>
+        <div class="flip-card" tabindex="0" aria-label="Liqeni Ohrit">
+          <div class="flip-card-inner">
+            <div class="flip-card-front" data-key="place4_name" style="background-image: url('liqeniohrit.jpg');">
+              <div class="place-name">Liqeni Ohrit</div>
+            </div>
+            <div class="flip-card-back" data-key="place4_info">
+             Liqeni i Ohrit është një nga liqenet më të vjetër dhe më të thellë në Evropë, i ndarë midis Shqipërisë dhe Maqedonisë së Veriut. Pjesa shqiptare ndodhet në qytetin e Pogradecit. Ai ka një biodiversitet të pasur dhe është nën mbrojtjen e UNESCO-s. Uji i tij është i pastër dhe i freskët, dhe zona përreth është e njohur për turizëm, tradita kulturore dhe natyrë të mrekullueshme.
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <section id="historike">
+      <h2 data-key="section_historike">Trashëgimia Historike</h2>
+      <div class="card-container">
+        <div class="flip-card" tabindex="0" aria-label="Kalaja e Pogradecit">
+          <div class="flip-card-inner">
+            <div class="flip-card-front" data-key="place9_name" style="background-image: url('kalaja pogradecit.jpg');">
+              <div class="place-name">Kalaja e Pogradecit</div>
+            </div>
+            <div class="flip-card-back" data-key="place9_info">
+              Kalaja e Pogradecit është një fortifikim historik që shtrihet mbi qytetin dhe ofron një pamje panoramike mbi Liqenin e Ohrit.
+            </div>
+          </div>
+        </div>
+        <div class="flip-card" tabindex="0" aria-label="Manastiri i Voskopojës">
+          <div class="flip-card-inner">
+            <div class="flip-card-front" data-key="place10_name" style="background-image: url('manastiri voskopojes.jpg');">
+              <div class="place-name">Manastiri i Voskopojës</div>
+            </div>
+            <div class="flip-card-back" data-key="place10_info">
+              Manastiri i Voskopojës është një monument fetar me vlera historike dhe artistike, vendi është edhe qendër e rëndësishme e religjionit ortodoks.
+            </div>
+          </div>
+        </div>
+        <div class="flip-card" tabindex="0" aria-label="Kisha e Mborjes">
+          <div class="flip-card-inner">
+            <div class="flip-card-front" data-key="place11_name" style="background-image: url('kishamborjes.jpeg');">
+              <div class="place-name">Kisha e Mborjes</div>
+            </div>
+            <div class="flip-card-back" data-key="place11_info">
+              Kisha e Mborjes është një kishë historike mbi një kodër pranë Pogradecit, e njohur për freskat dhe arkitekturën e saj të veçantë mesjetare.
+            </div>
+          </div>
+        </div>
+        <div class="flip-card" tabindex="0" aria-label="Kështjella e Beratit">
+          <div class="flip-card-inner">
+            <div class="flip-card-front" data-key="place12_name" style="background-image: url('keshtjella beratit.jpeg');">
+              <div class="place-name">Kështjella e Beratit</div>
+            </div>
+            <div class="flip-card-back" data-key="place12_info">
+              Një kalë historik i rëndësishëm me origjinë të hershme, i njohur për muret cilësore dhe pamjet spektakolare mbi qytetin e Beratit.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    // Flip cards on click or keyboard (Enter/Space)
+    document.querySelectorAll('.flip-card').forEach(card => {
+      card.addEventListener('click', () => {
+        card.classList.toggle('flipped');
+      });
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.classList.toggle('flipped');
+        }
+      });
+    });
+
+    const translations = {
+      sq: {
+        nav_natyrore: "Natyrore",
+        nav_kulturore: "Kulturore",
+        nav_historike: "Historike",
+        header_title: "Vendet Turistike të Rajonit Juglindor të Shqipërisë",
+        section_natyrore: "Trashëgimia Natyrore",
+        section_kulturore: "Trashëgimia Kulturore",
+        section_historike: "Trashëgimia Historike",
+        place1_name: "Liqeni i Prespës",
+        place1_info: "Liqeni i Prespës është një nga liqenet më të vjetër në Ballkan, i njohur për biodiversitetin dhe peizazhet natyrore të paprekura. Është habitat për shumë specie karakteristike.",
+        place2_name: "Parku Kombëtar i Llogarasë",
+        place2_info: "Parku Kombëtar i Llogarasë shtrihet në malet e jugut dhe ofron pamje spektakolare të Detit Jon dhe biodiversitet unik mes pyjeve dhe shkëmbinjve.",
+        place3_name: "Kanioni i Osumit",
+        place3_info: "Kanioni i Osumit është një nga kanionet më të mëdha në vend, me shkëmbinj të thepisur dhe ujëvara mahnitëse që tërheqin adhuruesit e natyrës dhe aventurës.",
+        place4_name: "Shpella e Pëllumbasit",
+        place4_info: "Një nga shpellat më të mëdha në Shqipëri, e njohur për formacionet e saj gjeologjike të veçanta dhe për rëndësinë paleontologjike me mbetje fosile.",
+        place5_name: "Vendasja e Voskopoje",
+        place5_info: "Voskopoja është një qendër e rëndësishme kulturore dhe fetare me kishat e saj ikonografike dhe trashëgimi të pasur të artit ortodoks dhe edukimit.",
+        place6_name: "Festivali Folklorik i Korçës",
+        place6_info: "Një nga festivalet më të njohura folklorike në Shqipëri, që promovon këngët, vallet dhe traditat kulturore të rajonit juglindor.",
+        place7_name: "Muzeu i Pavarësisë në Korçë",
+        place7_info: "Muzeu ruan objekte dhe dokumente të rëndësishme për historinë e pavarësisë së Shqipërisë dhe kulturën lokale të juglindjes.",
+        place8_name: "Qyteti i Vjetër i Gjirokastrës",
+        place8_info: "Një vend i trashëgimisë kulturore që daton që nga periudha osmane, i njohur për arkitekturën karakteristike dhe kështjellën madhështore.",
+        place9_name: "Kalaja e Pogradecit",
+        place9_info: "Kalaja e Pogradecit është një fortifikim historik që shtrihet mbi qytetin dhe ofron një pamje panoramike mbi Liqenin e Ohrit.",
+        place10_name: "Manastiri i Voskopojës",
+        place10_info: "Manastiri i Voskopojës është një monument fetar me vlera historike dhe artistike, vendi është edhe qendër e rëndësishme e religjionit ortodoks.",
+        place11_name: "Kisha e Mborjes",
+        place11_info: "Kisha e Mborjes është një kishë historike mbi një kodër pranë Pogradecit, e njohur për freskat dhe arkitekturën e saj të veçantë mesjetare.",
+        place12_name: "Kështjella e Beratit",
+        place12_info: "Një kalë historik i rëndësishëm me origjinë të hershme, i njohur për muret cilësore dhe pamjet spektakolare mbi qytetin e Beratit."
+      },
+      en: {
+        nav_natyrore: "Natural",
+        nav_kulturore: "Cultural",
+        nav_historike: "Historical",
+        header_title: "Tourist Places of Southeastern Albania",
+        section_natyrore: "Natural Heritage",
+        section_kulturore: "Cultural Heritage",
+        section_historike: "Historical Heritage",
+        place1_name: "Lake Prespa",
+        place1_info: "Lake Prespa is one of the oldest lakes in the Balkans known for its biodiversity and untouched natural landscapes. It is habitat for many characteristic species.",
+        place2_name: "Llogara National Park",
+        place2_info: "Llogara National Park stretches over southern mountains offering spectacular views of the Ionian Sea and unique biodiversity among forests and cliffs.",
+        place3_name: "Osum Canyon",
+        place3_info: "Osum Canyon is one of the largest canyons in the country, featuring steep cliffs and impressive waterfalls attracting nature and adventure lovers.",
+        place4_name: "Pëllumbas Cave",
+        place4_info: "One of the largest caves in Albania, famous for its unique geological formations and paleontological significance with fossil remains.",
+        place5_name: "Voskopoja Settlement",
+        place5_info: "Voskopoja is an important cultural and religious center with its iconic churches and rich heritage of Orthodox art and education.",
+        place6_name: "Korçë Folklore Festival",
+        place6_info: "One of the most renowned folklore festivals in Albania promoting songs, dances and cultural traditions of the southeastern region.",
+        place7_name: "Independence Museum in Korçë",
+        place7_info: "The museum preserves important objects and documents related to Albania's independence history and southeastern local culture.",
+        place8_name: "Old Town of Gjirokastër",
+        place8_info: "A cultural heritage site dating back to the Ottoman era, known for its distinctive architecture and magnificent castle.",
+        place9_name: "Pogradec Castle",
+        place9_info: "Pogradec Castle is a historic fortification overlooking the city and offering panoramic views of Lake Ohrid.",
+        place10_name: "Voskopoja Monastery",
+        place10_info: "Voskopoja Monastery is a religious monument with historical and artistic value, and an important Orthodox religious center.",
+        place11_name: "Mborje Church",
+        place11_info: "Mborje Church is a historic church atop a hill near Pogradec, known for its frescoes and distinctive medieval architecture.",
+        place12_name: "Berat Fortress",
+        place12_info: "An important historic fortress of ancient origin, known for its quality walls and spectacular views over the city of Berat."
+      },
+      fr: {
+        nav_natyrore: "Naturel",
+        nav_kulturore: "Culturel",
+        nav_historike: "Historique",
+        header_title: "Lieux Touristiques du Sud-Est de l'Albanie",
+        section_natyrore: "Patrimoine Naturel",
+        section_kulturore: "Patrimoine Culturel",
+        section_historike: "Patrimoine Historique",
+        place1_name: "Lac de Prespa",
+        place1_info: "Le lac de Prespa est l'un des plus anciens lacs des Balkans, connu pour sa biodiversité et ses paysages naturels préservés. Il est l'habitat de nombreuses espèces caractéristiques.",
+        place2_name: "Parc National de Llogara",
+        place2_info: "Le parc national de Llogara s'étend sur les montagnes du sud offrant une vue spectaculaire sur la mer Ionienne et une biodiversité unique entre forêts et falaises.",
+        place3_name: "Canyon de l'Osum",
+        place3_info: "Le canyon de l'Osum est l'un des plus grands canyons du pays, avec des falaises escarpées et des cascades impressionnantes attirant les amateurs de nature et d'aventure.",
+        place4_name: "Grotte de Pëllumbas",
+        place4_info: "L'une des plus grandes grottes d'Albanie, célèbre pour ses formations géologiques uniques et son importance paléontologique avec des restes fossiles.",
+        place5_name: "Habitat de Voskopoja",
+        place5_info: "Voskopoja est un centre culturel et religieux important avec ses églises emblématiques et un riche patrimoine d'art orthodoxe et d'éducation.",
+        place6_name: "Festival folklorique de Korçë",
+        place6_info: "L'un des festivals folkloriques les plus réputés d'Albanie qui promeut les chants, danses et traditions culturelles de la région sud-est.",
+        place7_name: "Musée de l'Indépendance à Korçë",
+        place7_info: "Le musée conserve des objets et documents importants liés à l'histoire de l'indépendance de l'Albanie et à la culture locale du sud-est.",
+        place8_name: "Vieille Ville de Gjirokastër",
+        place8_info: "Un site du patrimoine culturel datant de l'époque ottomane, connu pour son architecture distinctive et son château majestueux.",
+        place9_name: "Château de Pogradec",
+        place9_info: "Le château de Pogradec est une fortification historique surplombant la ville et offrant des vues panoramiques sur le lac d'Ohrid.",
+        place10_name: "Monastère de Voskopoja",
+        place10_info: "Le monastère de Voskopoja est un monument religieux de valeur historique et artistique, un centre religieux orthodoxe important.",
+        place11_name: "Église de Mborje",
+        place11_info: "L'église de Mborje est une église historique au sommet d'une colline près de Pogradec, connue pour ses fresques et son architecture médiévale distinctive.",
+        place12_name: "Forteresse de Berat",
+        place12_info: "Une forteresse historique importante d'origine ancienne, connue pour ses murs de qualité et ses vues spectaculaires sur la ville de Berat."
+      }
+    };
+
+    // Function to update all translatable elements for the current language
+    function updateTranslations(lang) {
+      // Update text content for data-key elements
+      document.querySelectorAll('[data-key]').forEach(el => {
+        const key = el.getAttribute('data-key');
+        let text = translations[lang][key];
+        if(text) {
+          if(el.classList.contains('flip-card-front')){
+            const placeNameDiv = el.querySelector('.place-name');
+            if(placeNameDiv) placeNameDiv.textContent = text;
+          } else {
+            el.textContent = text;
+          }
+        }
+      });
+      // Update aria-label of flip-cards for accessibility
+      document.querySelectorAll('.flip-card').forEach((card, idx) => {
+        let placeKey = 'place' + (idx + 1) + '_name';
+        if(translations[lang][placeKey]){
+          card.setAttribute('aria-label', translations[lang][placeKey]);
+        }
+      });
+      // Update the selected flag emoji
+      const flagMap = {sq: '🇦🇱', en: '🇬🇧', fr: '🇫🇷'};
+      const flagSpan = document.getElementById('selected-flag');
+      flagSpan.textContent = flagMap[lang] || '🏳️';
+    }
+
+    const languageSelect = document.getElementById('language-select');
+
+    // Initialize with default language 'sq'
+    updateTranslations('sq');
+
+    languageSelect.addEventListener('change', e => {
+      const selectedLang = e.target.value;
+      updateTranslations(selectedLang);
+    });
+
+  </script>
+</body>
+</html>
