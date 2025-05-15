@@ -15,6 +15,45 @@
       line-height: 1.6;
       scroll-padding-top: 70px;
     }
+    .lang-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+}
+
+#selected-flag {
+  font-size: 1.5rem;
+  user-select: none;
+  line-height: 1;
+}
+
+#language-select {
+  background: white !important;
+  color: black !important;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.3s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  box-shadow: 0 0 8px rgba(0,0,0,0.15);
+}
+
+#language-select:hover,
+#language-select:focus {
+  background: #f0f0f0 !important;
+  outline: none;
+}
+
     nav {
       position: fixed;
       top: 0;
@@ -237,7 +276,7 @@
     Vendet Turistike të Rajonit Juglindor të Shqipërisë
   </header>
   <main>
-    <p>Mirësevini në Rajonin Juglindor të Shqipërisë! Ky rajon magjepsës ofron një pasuri të pasur historike, kulturore dhe natyrore që do t'ju lërë pa fjalë. Nga liqenet e mrekullueshme dhe monumentet e lashta, deri te qytetet e bukura me kalatë dhe traditat e pasura, rajoni juglindor është një destinacion ideal për ata që kërkojnë një eksperiencë autentike. Me një mikrokosëm të veçantë që bashkon natyrën dhe kulturën, ky rajon është vendi ku mund të shijoni bukuri të paprekura, të shihni qytetërime të lashta dhe të përjetoni mikpritjen shqiptare në çdo hap. Zgjidhni rajonin juglindor dhe bëhuni pjesë e një udhëtimi të paharrueshëm!</p>
+    <p  id="welcome_message" data-key="welcome_message">Mirësevini në Rajonin Juglindor të Shqipërisë! Ky rajon magjepsës ofron një pasuri të pasur historike, kulturore dhe natyrore që do t'ju lërë pa fjalë. Nga liqenet e mrekullueshme dhe monumentet e lashta, deri te qytetet e bukura me kalatë dhe traditat e pasura, rajoni juglindor është një destinacion ideal për ata që kërkojnë një eksperiencë autentike. Me një mikrokosëm të veçantë që bashkon natyrën dhe kulturën, ky rajon është vendi ku mund të shijoni bukuri të paprekura, të shihni qytetërime të lashta dhe të përjetoni mikpritjen shqiptare në çdo hap. Zgjidhni rajonin juglindor dhe bëhuni pjesë e një udhëtimi të paharrueshëm!</p>
     <section id="natyrale">
       <h2 data-key="section_natyrore">Trashëgimia Natyrore</h2>
       <div class="card-container">
@@ -390,8 +429,10 @@
         place11_name: "Kisha e Mborjes",
         place11_info: "Kisha e Mborjes është një kishë historike mbi një kodër pranë Pogradecit, e njohur për freskat dhe arkitekturën e saj të veçantë mesjetare.",
         place12_name: "Kështjella e Beratit",
-        place12_info: "Një kalë historik i rëndësishëm me origjinë të hershme, i njohur për muret cilësore dhe pamjet spektakolare mbi qytetin e Beratit."
+        place12_info: "Një kalë historik i rëndësishëm me origjinë të hershme, i njohur për muret cilësore dhe pamjet spektakolare mbi qytetin e Beratit.",
+        welcome_message: "Mirësevini në Rajonin Juglindor të Shqipërisë! Ky rajon magjepsës ofron një pasuri të pasur historike, kulturore dhe natyrore që do t'ju lërë pa fjalë. Nga liqenet e mrekullueshme dhe monumentet e lashta, deri te qytetet e bukura me kalatë dhe traditat e pasura, rajoni juglindor është një destinacion ideal për ata që kërkojnë një eksperiencë autentike. Me një mikrokosëm të veçantë që bashkon natyrën dhe kulturën, ky rajon është vendi ku mund të shijoni bukuri të paprekura, të shihni qytetërime të lashta dhe të përjetoni mikpritjen shqiptare në çdo hap. Zgjidhni rajonin juglindor dhe bëhuni pjesë e një udhëtimi të paharrueshëm!",
       },
+
       en: {
         nav_natyrore: "Natural",
         nav_kulturore: "Cultural",
@@ -423,7 +464,8 @@
         place11_name: "Mborje Church",
         place11_info: "Mborje Church is a historic church atop a hill near Pogradec, known for its frescoes and distinctive medieval architecture.",
         place12_name: "Berat Fortress",
-        place12_info: "An important historic fortress of ancient origin, known for its quality walls and spectacular views over the city of Berat."
+        place12_info: "An important historic fortress of ancient origin, known for its quality walls and spectacular views over the city of Berat.",
+        welcome_message: "Welcome to the Southeastern Region of Albania! This enchanting region offers a rich historical, cultural, and natural wealth that will leave you speechless. From stunning lakes and ancient monuments to beautiful cities with castles and rich traditions, the southeastern region is an ideal destination for those seeking an authentic experience. With a unique microcosm that combines nature and culture, this region is where you can enjoy untouched beauty, see ancient civilizations, and experience Albanian hospitality at every step. Choose the southeastern region and be part of an unforgettable journey!",
       },
       fr: {
         nav_natyrore: "Naturel",
@@ -456,7 +498,8 @@
         place11_name: "Église de Mborje",
         place11_info: "L'église de Mborje est une église historique au sommet d'une colline près de Pogradec, connue pour ses fresques et son architecture médiévale distinctive.",
         place12_name: "Forteresse de Berat",
-        place12_info: "Une forteresse historique importante d'origine ancienne, connue pour ses murs de qualité et ses vues spectaculaires sur la ville de Berat."
+        place12_info: "Une forteresse historique importante d'origine ancienne, connue pour ses murs de qualité et ses vues spectaculaires sur la ville de Berat.",
+         welcome_message: "Bienvenue dans la région sud-est de l'Albanie! Cette région enchanteresse offre une richesse historique, culturelle et naturelle qui vous laissera sans voix. Des lacs magnifiques et des monuments anciens aux belles villes avec des châteaux et des traditions riches, la région sud-est est une destination idéale pour ceux qui recherchent une expérience authentique. Avec un microcosme unique qui allie nature et culture, cette région est l'endroit où vous pouvez profiter d'une beauté intacte, voir des civilisations anciennes et vivre l'hospitalité albanaise à chaque pas. Choisissez la région sud-est et faites partie d'un voyage inoubliable!",
       }
     };
 
